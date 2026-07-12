@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { TierBadge } from "@/components/tier-badge";
-import { getCapitalTier, getTraderTier } from "@/lib/tiers";
 import {
   X,
   Palette,
@@ -377,8 +375,6 @@ export function CommunitySheet({ open, onClose }: { open: boolean; onClose: () =
 
 /* ---------------- Profile ---------------- */
 export function ProfileSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const capitalTier = getCapitalTier(68_000);
-  const traderTier = getTraderTier(24_500);
   return (
     <Sheet open={open} onClose={onClose} title="Profile" icon={BadgeCheck}>
       <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-soft">
@@ -404,15 +400,13 @@ export function ProfileSheet({ open, onClose }: { open: boolean; onClose: () => 
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-2.5">
-        <div className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card p-3 text-center shadow-xs">
+        <div className="rounded-2xl border border-border bg-card p-3 text-center shadow-xs">
           <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Portfolio Level</p>
-          <TierBadge tier={capitalTier.current} size={44} />
-          <p className="text-sm font-extrabold text-primary">{capitalTier.current.name}</p>
+          <p className="mt-0.5 inline-flex items-center gap-1 text-sm font-extrabold text-primary">💎 {PROFILE.portfolioLevel}</p>
         </div>
-        <div className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card p-3 text-center shadow-xs">
+        <div className="rounded-2xl border border-border bg-card p-3 text-center shadow-xs">
           <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Trader Level</p>
-          <TierBadge tier={traderTier.current} size={44} />
-          <p className="text-sm font-extrabold text-gold">{traderTier.current.name}</p>
+          <p className="mt-0.5 text-sm font-extrabold text-gold">{PROFILE.traderLevel}</p>
         </div>
       </div>
 

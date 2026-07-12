@@ -6,6 +6,7 @@ import {
   Video,
   Info,
   Hash,
+  Home,
   MessageCircle,
   Users,
   Compass,
@@ -14,6 +15,7 @@ import {
   Palette,
   LayoutGrid,
 } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { Avatar } from "./atoms";
 
@@ -104,6 +106,7 @@ export function ConversationHeader({
 }
 
 const NAV = [
+  { icon: Home, label: "Home" },
   { icon: MessageCircle, label: "Chats", badge: 3, active: true },
   { icon: Compass, label: "Explore" },
   { icon: Users, label: "People" },
@@ -123,7 +126,9 @@ export function MobileBottomNavImpl({
   onExplore?: () => void;
   onSaved?: () => void;
 }) {
+  const navigate = useNavigate();
   const handlers: Record<string, (() => void) | undefined> = {
+    Home: () => navigate({ to: "/" }),
     People: onOpenLeft,
     Explore: onExplore,
     Saved: onSaved,

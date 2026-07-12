@@ -5,7 +5,9 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Community Chat — premium purple + light design system.
+ * Cryptvora — unified design system.
+ * Light: premium purple + light (Community Chat reference).
+ * Dark: premium FinTech dark (deep charcoal + royal purple accents).
  * All colors in oklch. Semantic tokens only; never hardcode colors in components.
  */
 
@@ -43,14 +45,25 @@
   --color-bubble-in: var(--bubble-in);
   --color-bubble-in-foreground: var(--bubble-in-foreground);
   --color-gain: var(--gain);
+  --color-gain-foreground: var(--gain-foreground);
   --color-loss: var(--loss);
+  --color-loss-foreground: var(--loss-foreground);
   --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
+  --color-cyan: var(--cyan);
+  --color-panel: var(--panel);
+  --color-panel-foreground: var(--panel-foreground);
+  --color-elevated: var(--elevated);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
-  --color-elevated: var(--elevated);
-  --color-cyan: var(--cyan);
 
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
@@ -70,6 +83,10 @@
 
   --surface: oklch(0.975 0.008 300);
   --surface-2: oklch(0.955 0.012 300);
+
+  --panel: oklch(1 0 0);
+  --panel-foreground: oklch(0.24 0.035 288);
+  --elevated: oklch(0.955 0.012 300);
 
   --primary: oklch(0.55 0.235 293);
   --primary-foreground: oklch(0.99 0.004 300);
@@ -96,16 +113,24 @@
   --bubble-in-foreground: oklch(0.27 0.03 288);
 
   --gain: oklch(0.62 0.16 158);
+  --gain-foreground: oklch(0.99 0 0);
   --loss: oklch(0.6 0.22 22);
+  --loss-foreground: oklch(0.99 0 0);
   --gold: oklch(0.78 0.14 82);
+  --gold-foreground: oklch(0.25 0.04 80);
+  --cyan: oklch(0.6 0.11 220);
+
+  --chart-1: oklch(0.55 0.235 293);
+  --chart-2: oklch(0.62 0.16 158);
+  --chart-3: oklch(0.78 0.14 82);
+  --chart-4: oklch(0.6 0.22 22);
+  --chart-5: oklch(0.6 0.11 220);
 
   --sidebar: oklch(0.995 0.004 300);
   --sidebar-foreground: oklch(0.3 0.03 288);
   --sidebar-accent: oklch(0.95 0.028 297);
+  --sidebar-accent-foreground: oklch(0.42 0.15 293);
   --sidebar-border: oklch(0.93 0.01 300);
-
-  --elevated: oklch(0.97 0.008 300);
-  --cyan: oklch(0.7 0.13 210);
 
   --gradient-primary: linear-gradient(135deg, oklch(0.58 0.24 290), oklch(0.62 0.2 320));
   --gradient-bubble: linear-gradient(135deg, oklch(0.57 0.235 291), oklch(0.6 0.21 312));
@@ -120,72 +145,88 @@
   --shadow-glow: 0 14px 40px -12px oklch(0.55 0.235 293 / 0.5);
 }
 
-/* ============================================================
- * DARK MODE — premium FinTech palette (Linear / Raycast / Stripe tier)
- * Not an inversion of light mode: true deep-black surfaces with the
- * Cryptvora owl-logo purple family as the sole accent hue.
- * ============================================================ */
+/* ===== DARK — premium FinTech (deep charcoal + royal purple) ===== */
 .dark {
   color-scheme: dark;
-  --radius: 1rem;
 
-  --background: #0a0a0f;
-  --foreground: #f1eefb;
+  /* True-black base inspired by TradingView / Apple pro-dark.
+     Surfaces climb in tiny steps so hierarchy reads without ever feeling grey. */
+  --background: oklch(0.06 0.002 285);            /* near #050507 */
+  --foreground: oklch(0.965 0.006 300);           /* crisp white */
 
-  --card: #17171f;
-  --card-foreground: #f1eefb;
-  --popover: #17171f;
-  --popover-foreground: #f1eefb;
+  --surface: oklch(0.095 0.004 285);              /* #0d0d10 */
+  --surface-2: oklch(0.13 0.006 285);             /* #16161b */
 
-  --surface: #111118;
-  --surface-2: #1d1d27;
-  --elevated: #1d1d27;
+  --card: oklch(0.115 0.006 285);                 /* panel body */
+  --card-foreground: oklch(0.965 0.006 300);
+  --popover: oklch(0.135 0.008 285);
+  --popover-foreground: oklch(0.965 0.006 300);
 
-  --primary: #8b3dfa;
-  --primary-foreground: #ffffff;
-  --primary-soft: #241a3d;
-  --primary-glow: #a75bfa;
+  --panel: oklch(0.115 0.006 285);
+  --panel-foreground: oklch(0.965 0.006 300);
+  --elevated: oklch(0.17 0.01 285);
 
-  --secondary: #17171f;
-  --secondary-foreground: #e7e2f7;
+  /* Cryptvora premium purple — a touch more saturated on true black */
+  --primary: oklch(0.66 0.245 300);               /* #A55BFF vibe */
+  --primary-foreground: oklch(0.99 0.004 300);
+  --primary-soft: oklch(0.24 0.09 300);
+  --primary-glow: oklch(0.76 0.19 305);           /* highlight */
 
-  --muted: #17171f;
-  --muted-foreground: #8f8da3;
+  --secondary: oklch(0.15 0.008 285);
+  --secondary-foreground: oklch(0.94 0.008 300);
 
-  --accent: #1d1d27;
-  --accent-foreground: #c68afb;
+  --muted: oklch(0.14 0.008 285);
+  --muted-foreground: oklch(0.68 0.014 295);
 
-  --destructive: #f0526a;
-  --destructive-foreground: #ffffff;
+  --accent: oklch(0.22 0.06 300);
+  --accent-foreground: oklch(0.88 0.09 305);
 
-  --border: #2a2a36;
-  --input: #2a2a36;
-  --ring: #8b3dfa;
+  --destructive: oklch(0.62 0.2 25);
+  --destructive-foreground: oklch(0.99 0 0);
 
-  --bubble-in: #1d1d27;
-  --bubble-in-foreground: #f1eefb;
+  /* Hairline borders — visible on true black without feeling heavy */
+  --border: oklch(1 0 0 / 0.08);
+  --input: oklch(1 0 0 / 0.1);
+  --ring: oklch(0.66 0.245 300);
 
-  --gain: #34d399;
-  --loss: #f0526a;
-  --gold: #e8c468;
-  --cyan: #5ec9e0;
+  --bubble-in: oklch(0.15 0.008 285);
+  --bubble-in-foreground: oklch(0.95 0.008 300);
 
-  --sidebar: #111118;
-  --sidebar-foreground: #e7e2f7;
-  --sidebar-accent: #1d1d27;
-  --sidebar-border: #2a2a36;
+  /* TradingView-style vivid finance greens/reds on black */
+  --gain: oklch(0.78 0.17 152);
+  --gain-foreground: oklch(0.12 0.02 160);
+  --loss: oklch(0.68 0.2 24);
+  --loss-foreground: oklch(0.99 0 0);
+  --gold: oklch(0.82 0.14 82);
+  --gold-foreground: oklch(0.2 0.03 80);
+  --cyan: oklch(0.78 0.12 210);
 
-  --gradient-primary: linear-gradient(135deg, #8b3dfa, #a75bfa);
-  --gradient-bubble: linear-gradient(135deg, #6f25e9, #8b3dfa);
+  --chart-1: oklch(0.66 0.245 300);
+  --chart-2: oklch(0.76 0.19 305);
+  --chart-3: oklch(0.78 0.17 152);
+  --chart-4: oklch(0.82 0.14 82);
+  --chart-5: oklch(0.68 0.2 24);
+
+  /* Sidebar sits on absolute black — Discord/TradingView shell */
+  --sidebar: oklch(0.04 0.002 285);
+  --sidebar-foreground: oklch(0.82 0.012 298);
+  --sidebar-accent: oklch(0.14 0.008 285);
+  --sidebar-accent-foreground: oklch(0.94 0.05 305);
+  --sidebar-border: oklch(1 0 0 / 0.06);
+
+  /* Premium purple gradients (kept subtle) */
+  --gradient-primary: linear-gradient(135deg, oklch(0.6 0.26 296), oklch(0.7 0.22 312));
+  --gradient-bubble: linear-gradient(135deg, oklch(0.58 0.26 294), oklch(0.66 0.22 314));
   --gradient-mesh:
-    radial-gradient(55% 50% at 15% 0%, rgba(139, 61, 250, 0.16), transparent 60%),
-    radial-gradient(45% 45% at 100% 10%, rgba(111, 37, 233, 0.12), transparent 60%),
-    radial-gradient(50% 50% at 80% 100%, rgba(167, 91, 250, 0.1), transparent 60%);
+    radial-gradient(60% 55% at 12% 4%, oklch(0.55 0.28 292 / 0.14), transparent 62%),
+    radial-gradient(45% 45% at 96% 8%, oklch(0.66 0.24 302 / 0.09), transparent 62%),
+    radial-gradient(55% 55% at 82% 100%, oklch(0.74 0.19 310 / 0.09), transparent 62%);
 
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.35);
-  --shadow-soft: 0 4px 20px -8px rgba(0, 0, 0, 0.55);
-  --shadow-elevated: 0 18px 50px -22px rgba(0, 0, 0, 0.65);
-  --shadow-glow: 0 14px 44px -14px rgba(139, 61, 250, 0.45);
+  /* Elegant, deep shadows — real depth on true black */
+  --shadow-xs: 0 1px 2px oklch(0 0 0 / 0.6);
+  --shadow-soft: 0 6px 24px -8px oklch(0 0 0 / 0.75);
+  --shadow-elevated: 0 30px 70px -24px oklch(0 0 0 / 0.9);
+  --shadow-glow: 0 18px 55px -12px oklch(0.66 0.245 300 / 0.55);
 }
 
 @layer base {
@@ -198,8 +239,12 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    font-feature-settings: "tnum" 1, "cv01" 1;
   }
   html { scroll-behavior: smooth; }
+  ::selection {
+    background: color-mix(in oklch, var(--primary) 30%, transparent);
+  }
 }
 
 @utility font-mono { font-family: var(--font-mono); }
@@ -207,6 +252,7 @@
 @utility text-gain { color: var(--gain); }
 @utility text-loss { color: var(--loss); }
 @utility text-gold { color: var(--gold); }
+@utility text-cyan { color: var(--cyan); }
 
 @utility gradient-primary { background-image: var(--gradient-primary); }
 @utility gradient-bubble { background-image: var(--gradient-bubble); }
@@ -218,6 +264,35 @@
 @utility glass {
   background-color: color-mix(in oklch, var(--card) 72%, transparent);
   backdrop-filter: blur(18px) saturate(140%);
+}
+
+@utility metallic-border {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--card), var(--card)) padding-box,
+    linear-gradient(145deg, color-mix(in oklch, var(--foreground) 14%, transparent), transparent 55%) border-box;
+}
+
+@utility panel-shadow {
+  box-shadow:
+    0 1px 0 0 color-mix(in oklch, var(--foreground) 4%, transparent) inset,
+    var(--shadow-soft);
+}
+
+@utility glow-gain {
+  box-shadow:
+    0 0 0 1px color-mix(in oklch, var(--primary) 35%, transparent),
+    0 0 22px -6px color-mix(in oklch, var(--primary) 55%, transparent);
+}
+@utility glow-gold {
+  box-shadow: 0 0 22px -8px color-mix(in oklch, var(--gold) 60%, transparent);
+}
+
+@utility grid-bg {
+  background-image:
+    linear-gradient(to right, color-mix(in oklch, var(--foreground) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklch, var(--foreground) 6%, transparent) 1px, transparent 1px);
+  background-size: 44px 44px;
 }
 
 @utility no-scrollbar {
@@ -282,9 +357,38 @@
 }
 @utility animate-pulse-ring { animation: pulse-ring 2s ease-out infinite; }
 
+@keyframes ticker-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@utility animate-ticker { animation: ticker-marquee 40s linear infinite; }
+
+@keyframes flow-down {
+  0% { transform: translateY(-100%); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateY(300%); opacity: 0; }
+}
+@utility animate-flow { animation: flow-down 2.4s ease-in-out infinite; }
+
+@keyframes float-up {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  10% { opacity: 0.7; }
+  90% { opacity: 0.5; }
+  100% { transform: translateY(-120vh) scale(1.2); opacity: 0; }
+}
+@utility animate-float-up { animation: float-up 8s linear infinite; }
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}
+@utility animate-shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+
 /* ============================================================
- * Chat wallpapers / backgrounds (customization feature)
- * Applied to the message scroll surface. Token-based only.
+ * Chat wallpapers / backgrounds (community customization)
  * ============================================================ */
 @utility chat-bg-default { background-image: var(--gradient-mesh); }
 
@@ -309,9 +413,9 @@
     radial-gradient(62% 58% at 12% 6%, oklch(0.78 0.14 165 / 0.2), transparent 60%),
     radial-gradient(60% 60% at 94% 96%, oklch(0.78 0.12 195 / 0.16), transparent 60%);
 }
-@utility chat-bg-solid-lavender { background-color: oklch(0.965 0.02 300); background-image: none; }
-@utility chat-bg-solid-slate { background-color: oklch(0.955 0.008 260); background-image: none; }
-@utility chat-bg-solid-cream { background-color: oklch(0.975 0.02 90); background-image: none; }
+@utility chat-bg-solid-lavender { background-color: color-mix(in oklch, var(--primary) 6%, var(--background)); background-image: none; }
+@utility chat-bg-solid-slate { background-color: var(--surface-2); background-image: none; }
+@utility chat-bg-solid-cream { background-color: color-mix(in oklch, var(--gold) 8%, var(--background)); background-image: none; }
 
 @utility chat-bg-dots {
   background-image: radial-gradient(color-mix(in oklch, var(--primary) 16%, transparent) 1px, transparent 1.4px);
@@ -346,3 +450,94 @@
   to { opacity: 1; transform: scale(1); }
 }
 @utility animate-scale-in { animation: scale-in 0.18s cubic-bezier(0.22,1,0.36,1) both; }
+
+/* ---- Level / tier system: premium motion & depth (ported from Niveur) ---- */
+[dir="rtl"] .flip-rtl { transform: scaleX(-1); }
+.bg-panel { background-color: var(--card); }
+
+@keyframes badge-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+.badge-float { animation: badge-float 4s ease-in-out infinite; }
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+.glow-pulse { animation: glow-pulse 2.6s ease-in-out infinite; }
+
+.progress-track {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgb(0 0 0 / 0.35), transparent 40%),
+    var(--muted);
+  box-shadow:
+    inset 0 2px 4px rgb(0 0 0 / 0.45),
+    inset 0 -1px 0 color-mix(in oklch, var(--foreground) 8%, transparent);
+}
+.progress-fill { transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+@keyframes shine-sweep {
+  0% { transform: translateX(-120%); }
+  60%, 100% { transform: translateX(320%); }
+}
+.progress-shine {
+  position: absolute;
+  inset: 0;
+  width: 45%;
+  border-radius: inherit;
+  background: linear-gradient(100deg, transparent, rgb(255 255 255 / 0.5), transparent);
+  animation: shine-sweep 2.4s ease-in-out infinite;
+}
+[dir="rtl"] .progress-shine { animation-direction: reverse; }
+
+.tier-card { box-shadow: 0 12px 32px -18px rgb(0 0 0 / 0.6); }
+.tier-card:hover { box-shadow: 0 24px 48px -20px rgb(0 0 0 / 0.7); }
+
+@keyframes ceremony-burst {
+  0% { transform: scale(0.4); opacity: 1; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+.ceremony-burst { animation: ceremony-burst 1.3s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+@keyframes ceremony-flash {
+  0% { transform: scale(0.2); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+.ceremony-flash { animation: ceremony-flash 1.6s ease-out both; }
+
+@keyframes ceremony-badge-in {
+  0% { transform: scale(0.2) rotate(-8deg); opacity: 0; }
+  55% { transform: scale(1.12) rotate(2deg); opacity: 1; }
+  70% { transform: scale(0.98) rotate(-1deg); }
+  78% { transform: scale(1.03) translateX(-2px); }
+  84% { transform: scale(1.01) translateX(2px); }
+  90% { transform: scale(1) translateX(-1px); }
+  100% { transform: scale(1) translateX(0); }
+}
+.ceremony-badge { animation: ceremony-badge-in 1.4s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+@keyframes ceremony-title-in {
+  0% { transform: translateY(24px) scale(0.9); opacity: 0; letter-spacing: 0.4em; }
+  100% { transform: translateY(0) scale(1); opacity: 1; letter-spacing: normal; }
+}
+.ceremony-title { animation: ceremony-title-in 0.9s 0.55s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@keyframes ceremony-line-in {
+  0% { transform: translateY(14px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.ceremony-line { animation: ceremony-line-in 0.7s 0.7s ease-out both; }
+
+@keyframes particle-rise {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  15% { opacity: 1; }
+  100% { transform: translateY(-90vh) scale(0.4); opacity: 0; }
+}
+.ceremony-particle { animation: particle-rise 3s linear infinite both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .badge-float, .glow-pulse, .progress-shine, .ceremony-particle { animation: none; }
+}

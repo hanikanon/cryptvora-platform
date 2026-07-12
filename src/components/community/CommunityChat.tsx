@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { LeftSidebar } from "@/components/community/LeftSidebar";
@@ -21,11 +20,7 @@ import {
 import { ScrollToBottom } from "@/components/community/interactions";
 import { useChatSettings, WALLPAPER_CLASS } from "@/components/community/settings";
 
-export const Route = createFileRoute("/app/community")({
-  component: CommunityChat,
-});
-
-function CommunityChat() {
+export function CommunityChat() {
   const [active, setActive] = useState("signals");
   const [leftOpen, setLeftOpen] = useState(false);
   const [rightOpen, setRightOpen] = useState(false);
@@ -52,7 +47,7 @@ function CommunityChat() {
   };
 
   return (
-    <div className="flex h-[100dvh] w-full overflow-hidden bg-background">
+    <div className="flex h-full w-full overflow-hidden bg-background">
       {/* Desktop left sidebar */}
       <aside className="hidden w-[300px] shrink-0 border-r border-border lg:block">
         <LeftSidebar

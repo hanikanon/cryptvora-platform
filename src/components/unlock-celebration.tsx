@@ -11,7 +11,7 @@ import {
 import { createPortal } from "react-dom";
 import type { AnyTier } from "@/lib/tiers";
 import { BadgeSVG } from "@/lib/badge-svg";
-import { useI18n } from "@/lib/i18n";
+import { useLanguage } from "@/components/providers";
 
 type Ctx = { celebrate: (tier: AnyTier) => void };
 const UnlockCtx = createContext<Ctx | null>(null);
@@ -82,7 +82,7 @@ function playChime(tier: AnyTier) {
 /* ------------------------------------------------------------------ */
 
 function CelebrationOverlay({ tier, onClose }: { tier: AnyTier; onClose: () => void }) {
-  const { t, lang } = useI18n();
+  const { lang } = useLanguage();
   const mounted = useRef(false);
   const [target, setTarget] = useState<Element | null>(null);
 
@@ -155,7 +155,7 @@ function CelebrationOverlay({ tier, onClose }: { tier: AnyTier; onClose: () => v
 
       <div className="relative z-10 flex flex-col items-center gap-4 px-6 text-center">
         <p className="ceremony-line text-[11px] font-bold uppercase tracking-[0.4em] text-white/70">
-          {t("levels.newLevel")}
+          {"Level Unlocked"}
         </p>
         <div className="ceremony-badge">
           <BadgeSVG tier={tier} size={220} />
@@ -176,7 +176,7 @@ function CelebrationOverlay({ tier, onClose }: { tier: AnyTier; onClose: () => v
           onClick={onClose}
           className="ceremony-line mt-4 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-[12px] font-semibold uppercase tracking-wider text-white transition hover:bg-white/20"
         >
-          {t("levels.continue")}
+          {"Continue"}
         </button>
       </div>
     </div>,

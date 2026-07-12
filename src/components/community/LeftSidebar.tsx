@@ -1,5 +1,4 @@
-import { Search, Plus, Star, Hash, Users, Settings, LayoutDashboard } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { Search, Plus, Star, Hash, Users, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, BrandMark } from "./atoms";
 import { ROOMS, FAVORITES, DIRECT_MESSAGES, type Room } from "./data";
@@ -81,17 +80,10 @@ export function LeftSidebar({
       {/* brand */}
       <div className="flex items-center gap-2.5 px-4 py-4">
         <BrandMark size={38} />
-        <div className="min-w-0 flex-1 leading-tight">
+        <div className="leading-tight">
           <p className="text-[15px] font-extrabold tracking-tight text-foreground">Community</p>
           <p className="text-[11px] text-muted-foreground">Cryptvora network</p>
         </div>
-        <Link
-          to="/app"
-          title="Back to dashboard"
-          className="grid h-9 w-9 shrink-0 place-items-center rounded-xl text-muted-foreground transition hover:bg-sidebar-accent hover:text-foreground"
-        >
-          <LayoutDashboard className="h-4 w-4" />
-        </Link>
       </div>
 
       {/* search */}

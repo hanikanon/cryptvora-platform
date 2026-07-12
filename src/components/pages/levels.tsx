@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+
 import { ChevronRight, Gift, Lock, MapPin, Sparkles, Trophy, Zap, TrendingUp, Activity } from "lucide-react";
 
-import { AppShell } from "@/components/app-shell";
+import { useLanguage } from "@/components/providers";
 import { TierBadge } from "@/components/tier-badge";
 import { LevelProgress } from "@/components/level-progress";
 import { Panel, PanelHeader, Chip } from "@/components/ui/panel";
@@ -17,29 +17,18 @@ import {
   type CapitalTier,
   type TraderTier,
 } from "@/lib/tiers";
-import { useI18n } from "@/lib/i18n";
+
 import { cn } from "@/lib/utils";
 import { useUnlockCelebration } from "@/components/unlock-celebration";
 
-export const Route = createFileRoute("/app/levels")({
-  head: () => ({
-    meta: [
-      { title: "Levels — Cryptvora" },
-      { name: "description", content: "Two parallel 20-tier progression tracks: Portfolio and Trader." },
-      { property: "og:title", content: "Levels — Cryptvora" },
-      { property: "og:description", content: "Two parallel 20-tier progression tracks: Portfolio and Trader." },
-    ],
-  }),
-  component: LevelsPage,
-});
 
 const DEMO_CAPITAL = 68_000;
 const DEMO_XP = 6_800;
 
 type TrackKey = "capital" | "trader";
 
-function LevelsPage() {
-  const { t, lang } = useI18n();
+export default function LevelsPage() {
+  const { lang } = useLanguage();
   const [track, setTrack] = useState<TrackKey>("capital");
   const { celebrate } = useUnlockCelebration();
 
@@ -51,14 +40,13 @@ function LevelsPage() {
     : { tiers: TRADER_TIERS as AnyTier[], value: DEMO_XP, fmt: fmtXP, ...trd };
 
   return (
-    <AppShell>
-      <div className="space-y-6">
-        <div className="flex flex-wrap items-end justify-between gap-3">
+    <div className="space-y-6 p-3 lg:p-5">
+      <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <h1 className="text-xl font-bold tracking-tight text-foreground md:text-2xl">
-              {t("levels.title")}
+              {"Progression System"}
             </h1>
-            <p className="mt-1 text-[12px] text-muted-foreground">{t("levels.subtitle")}</p>
+            <p className="mt-1 text-[12px] text-muted-foreground">{"Two parallel 20-tier progression tracks: Portfolio and Trader."}</p>
           </div>
           {state.next && (
             <button
@@ -66,7 +54,7 @@ function LevelsPage() {
               className="inline-flex items-center gap-2 rounded-lg border border-gold/40 bg-gold/12 px-3 py-2 text-[12px] font-semibold text-gold transition hover:bg-gold/20 hover:shadow-[0_0_24px_-6px_var(--gold)]"
             >
               <Zap className="h-3.5 w-3.5" />
-              {t("levels.previewUpgrade")}
+              {"Preview upgrade"}
             </button>
           )}
         </div>
@@ -117,7 +105,7 @@ function LevelsPage() {
         <div>
           <div className="mb-3 flex items-center gap-2">
             <Trophy className="h-4 w-4 text-gold" />
-            <h2 className="text-sm font-semibold text-foreground">{t("levels.allLevels")}</h2>
+            <h2 className="text-sm font-semibold text-foreground">{"All Levels"}</h2>
             <span className="text-[10px] text-muted-foreground">
               {state.tiers.length} · {lang === "ar" ? state.tiers[0].nameAr : state.tiers[0].name} → {lang === "ar" ? state.tiers[state.tiers.length - 1].nameAr : state.tiers[state.tiers.length - 1].name}
             </span>
@@ -131,14 +119,13 @@ function LevelsPage() {
                 progress={i < state.index ? 1 : i === state.index ? state.progress : 0}
                 fmt={state.fmt}
                 lang={lang}
-                t={t}
                 onCelebrate={() => celebrate(tier)}
               />
             ))}
           </div>
         </div>
       </div>
-    </AppShell>
+    </div>
   );
 }
 
@@ -159,7 +146,7 @@ function TrackSummary({
   remaining: number;
   fmt: (n: number) => string;
 }) {
-  const { t, lang } = useI18n();
+  const { lang } = useLanguage();
   const name = lang === "ar" ? tier.nameAr : tier.name;
   const nextName = next ? (lang === "ar" ? next.nameAr : next.name) : null;
   const Icon = track === "capital" ? TrendingUp : Activity;
@@ -183,7 +170,7 @@ function TrackSummary({
       <div className="relative min-w-0 flex-1">
         <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
           <Icon className="h-3 w-3" />
-          {t(track === "capital" ? "levels.portfolio" : "levels.trader")}
+          {track === "capital" ? "Portfolio Track" : "Trader Track"}
         </div>
         <p className="mt-1 truncate text-lg font-black" style={{ color: tier.color }}>{name}</p>
         <p className="tnum text-[11px] text-muted-foreground">{fmt(value)}{nextName && ` → ${nextName}`}</p>
@@ -216,7 +203,7 @@ function CurrentLevelHero({
   remaining: number;
   fmt: (n: number) => string;
 }) {
-  const { t, lang } = useI18n();
+  const { lang } = useLanguage();
   const name = lang === "ar" ? tier.nameAr : tier.name;
   const tagline = lang === "ar" ? tier.taglineAr : tier.tagline;
   const nextName = next ? (lang === "ar" ? next.nameAr : next.name) : null;
@@ -244,7 +231,7 @@ function CurrentLevelHero({
 
         <div className="min-w-0 text-center md:text-start">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-            {t("levels.currentLevel")}
+            {"Current Level"}
           </p>
           <h2
             className="mt-1 text-3xl font-black tracking-tight md:text-4xl"
@@ -277,7 +264,7 @@ function CurrentLevelHero({
             <div className="flex items-center gap-2">
               <Gift className="h-4 w-4" style={{ color: next.color }} />
               <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                {t("levels.nextRewards")}
+                {"Next rewards"}
               </p>
             </div>
             <div className="mt-3 flex items-center gap-3">
@@ -315,15 +302,15 @@ function JourneyBar({
   value: number;
   fmt: (n: number) => string;
 }) {
-  const { t, lang } = useI18n();
+  const { lang } = useLanguage();
   const n = tiers.length;
   const overall = ((index + progress) / (n - 1)) * 100;
 
   return (
     <Panel>
       <PanelHeader
-        title={t("levels.journey")}
-        subtitle={`${fmt(value)} · ${t("levels.progressToNext")}`}
+        title={"Your Journey"}
+        subtitle={`${fmt(value)} · ${"Progress to next tier"}`}
         icon={<MapPin className="h-4 w-4 text-cyan" />}
       />
       <div className="overflow-x-auto px-5 pb-6 pt-10">
@@ -354,7 +341,7 @@ function JourneyBar({
               className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md px-1.5 py-0.5 text-[9px] font-bold text-background"
               style={{ background: tiers[index].color }}
             >
-              {t("levels.you")}
+              {"You"}
             </span>
           </div>
           <div className="relative flex justify-between pt-16">
@@ -388,14 +375,13 @@ function JourneyBar({
 /* ------------------------------------------------------------------ */
 
 function TierCard({
-  tier, state, progress, fmt, lang, t, onCelebrate,
+  tier, state, progress, fmt, lang, onCelebrate,
 }: {
   tier: AnyTier;
   state: "unlocked" | "current" | "locked";
   progress: number;
   fmt: (n: number) => string;
   lang: string;
-  t: (k: string) => string;
   onCelebrate: () => void;
 }) {
   const name = lang === "ar" ? tier.nameAr : tier.name;
@@ -428,7 +414,7 @@ function TierCard({
           )}
           style={!locked ? { background: tier.color } : undefined}
         >
-          {state === "current" ? t("levels.current") : locked ? t("levels.locked") : t("levels.unlocked")}
+          {state === "current" ? "Current" : locked ? "Locked" : "Unlocked"}
         </span>
         {locked && <Lock className="h-3.5 w-3.5 text-muted-foreground/70" />}
         {state === "current" && <Sparkles className="h-3.5 w-3.5" style={{ color: tier.color }} />}
@@ -452,7 +438,7 @@ function TierCard({
         </p>
         <p className="mt-0.5 text-[10px] italic text-muted-foreground">{tagline}</p>
         <p className="tnum mt-1 text-[10px] text-muted-foreground">
-          {t("levels.requirement")}: {fmt(tier.min)}+
+          {"Requires"}: {fmt(tier.min)}+
         </p>
       </div>
 
@@ -476,7 +462,7 @@ function TierCard({
 
       <div className="relative mt-3 border-t border-border/60 pt-2">
         <p className="mb-1 text-[9px] font-bold uppercase tracking-wider text-muted-foreground">
-          {t("levels.perks")}
+          {"Perks"}
         </p>
         <ul className="space-y-1">
           {perks.map((p) => (
@@ -491,7 +477,7 @@ function TierCard({
       <div className="relative mt-2 rounded-lg border border-border/50 bg-elevated/50 p-2">
         <p className="mb-1 flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider text-muted-foreground">
           <Gift className="h-2.5 w-2.5" style={{ color: tier.color }} />
-          {t("levels.tierRewards")}
+          {"Tier rewards"}
         </p>
         <ul className="space-y-0.5">
           {rewards.map((r) => (

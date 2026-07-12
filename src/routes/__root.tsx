@@ -11,7 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { ThemeProvider } from "../hooks/use-theme";
+import { Providers } from "../components/providers";
 
 function NotFoundComponent() {
   return (
@@ -77,19 +77,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Cryptvora — Institutional Trading Suite" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" },
+      { title: "Cryptvora — Premium Crypto Trading & Community Platform" },
       {
         name: "description",
         content:
-          "Cryptvora: portfolio analytics, risk management, trader levels and a premium trading community — all in one elegant platform.",
+          "Cryptvora is a premium crypto platform: live markets, trading terminal, portfolio analytics, risk management and a thriving trader community.",
       },
       { name: "author", content: "Cryptvora" },
-      { property: "og:title", content: "Cryptvora — Institutional Trading Suite" },
+      { property: "og:title", content: "Cryptvora — Premium Crypto Trading & Community Platform" },
       {
         property: "og:description",
         content:
-          "Cryptvora: portfolio analytics, risk management, trader levels and a premium trading community — all in one elegant platform.",
+          "Live markets, trading terminal, portfolio analytics, risk management and community chat — all in one premium platform.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -99,13 +99,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800&family=JetBrains+Mono:wght@400;500;600&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=JetBrains+Mono:wght@400;500;600;700&display=swap",
       },
+      { rel: "icon", href: "/logo.png", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/logo.png" },
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
   shellComponent: RootShell,
@@ -133,10 +135,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
+      <Providers>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
-      </ThemeProvider>
+      </Providers>
     </QueryClientProvider>
   );
 }
