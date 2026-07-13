@@ -11,7 +11,6 @@ import { cn } from "@/lib/utils"
  */
 export function Header() {
   const [dmOpen, setDmOpen] = useState(false)
-  const [dmOpen, setDmOpen] = useState(false)
   return (
     <>
     <header
