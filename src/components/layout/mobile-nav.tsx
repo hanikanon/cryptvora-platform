@@ -1,74 +1,68 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Home, Search, Plus, Wallet, User } from "lucide-react";
+import { Home, Search, PlusSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const TABS = [
   { label: "Home", href: "/", icon: Home },
   { label: "Explore", href: "/explore", icon: Search },
-  { label: "Create", href: "/create", icon: Plus, primary: true },
-  { label: "Portfolio", href: "/portfolio", icon: Wallet },
-  { label: "Profile", href: "/profile", icon: User },
-];
+  { label: "Create", href: "/create", icon: PlusSquare },
+  { label: "Portfolio", href: "/portfolio", icon: WalletIcon },
+  { label: "Profile", href: "/profile", icon: null },
+] as const;
+
+function WalletIcon(props: { className?: string; strokeWidth?: number }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={props.strokeWidth ?? 2} strokeLinecap="round" strokeLinejoin="round" className={props.className}>
+      <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-1" />
+      <path d="M20 12h-4a2 2 0 0 0 0 4h4v-4Z" />
+    </svg>
+  );
+}
 
 export function MobileNav() {
   const pathname = useLocation({ select: (l) => l.pathname });
 
   return (
-      <nav
-        className={cn(
-          "lg:hidden fixed bottom-0 inset-x-0 z-40 pb-[env(safe-area-inset-bottom)]",
-          "border-t border-border bg-background/85 backdrop-blur-xl",
-        )}
-      >
-        <ul className="mx-auto flex max-w-md items-stretch justify-around px-2">
-          {TABS.map((item) => {
-            const active =
-              item.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(item.href);
+    <nav
+      className={cn(
+        "lg:hidden fixed bottom-0 inset-x-0 z-40 pb-[env(safe-area-inset-bottom)]",
+        "border-t border-border bg-background/95 backdrop-blur-xl",
+      )}
+    >
+      <ul className="mx-auto flex max-w-md items-center justify-between px-5">
+        {TABS.map((item) => {
+          const active =
+            item.href === "/"
+              ? pathname === "/"
+              : pathname.startsWith(item.href);
 
-            if (item.primary) {
-              return (
-                <li key={item.href} className="flex-1">
-                  <Link
-                    to={item.href}
-                    className="flex flex-col items-center pt-1 pb-1.5"
-                    aria-label={item.label}
-                  >
-                    <span
-                      className={cn(
-                        "flex h-11 w-11 -mt-4 items-center justify-center rounded-2xl gradient-primary text-primary-foreground shadow-glow transition-transform active:scale-95",
-                        active && "ring-2 ring-primary/50 ring-offset-2 ring-offset-background",
-                      )}
-                    >
-                      <item.icon className="h-5 w-5" />
-                    </span>
-                  </Link>
-                </li>
-              );
-            }
-            return (
-              <li key={item.href} className="flex-1">
-                <Link
-                  to={item.href}
-                  className={cn(
-                    "flex flex-col items-center gap-1 py-2.5 text-[10px] font-medium transition-colors",
-                  )}
-                  aria-label={item.label}
-                >
+          return (
+            <li key={item.href}>
+              <Link
+                to={item.href}
+                className="flex items-center justify-center py-3 px-2"
+                aria-label={item.label}
+              >
+                {item.icon ? (
+                  <item.icon
+                    className={cn("h-[26px] w-[26px] transition-colors", active ? "text-foreground" : "text-muted-foreground")}
+                    strokeWidth={active ? 2.3 : 1.8}
+                  />
+                ) : (
                   <span
                     className={cn(
-                      "grid h-9 w-9 place-items-center rounded-full transition-all",
-                      active ? "bg-primary-soft text-primary" : "text-muted-foreground",
+                      "grid h-6 w-6 place-items-center rounded-full text-[9px] font-bold transition-all",
+                      active ? "ring-2 ring-foreground text-foreground" : "ring-1 ring-border text-muted-foreground",
                     )}
                   >
-                    <item.icon className={cn("h-[22px] w-[22px]", active && "scale-105")} strokeWidth={active ? 2.4 : 2} />
+                    H
                   </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
+                )}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
   );
 }
