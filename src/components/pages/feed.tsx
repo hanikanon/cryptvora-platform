@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Link } from "@tanstack/react-router"
 import { useHideOnScroll } from "@/hooks/use-hide-on-scroll"
 import { Heart, MessageCircle, Send, Bookmark, MoreHorizontal, Play, TrendingUp, TrendingDown } from "lucide-react"
 import { COINS } from "@/lib/market-data"
@@ -129,7 +130,11 @@ function StoriesBar() {
 
 function StoryAvatar({ user, live, isYou }: { user: string; live?: boolean; isYou?: boolean }) {
   return (
-    <button className="flex w-16 shrink-0 flex-col items-center gap-1.5 active:scale-95 transition-transform">
+    <Link
+      to={isYou ? "/profile" : "/u/$username"}
+      params={isYou ? undefined : { username: user }}
+      className="flex w-16 shrink-0 flex-col items-center gap-1.5 active:scale-95 transition-transform"
+    >
       <span
         className={cn(
           "relative grid h-16 w-16 place-items-center rounded-full p-[2px]",
@@ -160,7 +165,7 @@ function StoryAvatar({ user, live, isYou }: { user: string; live?: boolean; isYo
       <span className="max-w-full truncate text-[10px] text-muted-foreground">
         {isYou ? "Your story" : user}
       </span>
-    </button>
+    </Link>
   )
 }
 
@@ -189,12 +194,22 @@ function PostCard({ post }: { post: Post }) {
     <article className="border-y border-border bg-card sm:rounded-2xl sm:border">
       {/* Header */}
       <header className="flex items-center gap-3 px-3 py-2.5">
-        <div className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-primary to-gain text-xs font-black text-white ring-1 ring-border">
+        <Link
+          to="/u/$username"
+          params={{ username: post.user }}
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-primary to-gain text-xs font-black text-white ring-1 ring-border"
+        >
           {post.user[0].toUpperCase()}
-        </div>
+        </Link>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
-            <span className="truncate text-[13px] font-semibold text-foreground">{post.user}</span>
+            <Link
+              to="/u/$username"
+              params={{ username: post.user }}
+              className="truncate text-[13px] font-semibold text-foreground hover:underline"
+            >
+              {post.user}
+            </Link>
             <span className={cn("rounded-md px-1.5 py-0.5 text-[9px] font-black tracking-wider", tierClass(post.tier))}>
               {post.tier}
             </span>

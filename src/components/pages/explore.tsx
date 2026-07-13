@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router"
 import { Search, Flame, TrendingUp, TrendingDown, Sparkles } from "lucide-react"
 import { COINS } from "@/lib/market-data"
 import { fmtNum, fmtPct } from "@/lib/format"
@@ -48,17 +49,19 @@ export default function ExplorePage() {
           {TRENDERS.map((t) => (
             <div
               key={t.user}
-              className="w-40 shrink-0 rounded-2xl border border-border bg-card p-3 panel-shadow"
+              className="w-40 shrink-0 rounded-2xl border border-border bg-card p-3 panel-shadow transition hover:border-primary/40"
             >
-              <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-primary to-gain text-lg font-black text-white">
-                {t.user[0].toUpperCase()}
-              </div>
-              <p className="mt-2 text-center text-[13px] font-semibold text-foreground">{t.user}</p>
-              <p className="text-center text-[10px] font-black tracking-wider text-gold">{t.tier}</p>
-              <div className="mt-2 flex justify-between text-[11px]">
-                <span className="text-muted-foreground">Win {t.winrate}%</span>
-                <span className="tnum font-semibold text-gain">{fmtPct(t.roi)}</span>
-              </div>
+              <Link to="/u/$username" params={{ username: t.user }} className="block">
+                <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-primary to-gain text-lg font-black text-white">
+                  {t.user[0].toUpperCase()}
+                </div>
+                <p className="mt-2 text-center text-[13px] font-semibold text-foreground">{t.user}</p>
+                <p className="text-center text-[10px] font-black tracking-wider text-gold">{t.tier}</p>
+                <div className="mt-2 flex justify-between text-[11px]">
+                  <span className="text-muted-foreground">Win {t.winrate}%</span>
+                  <span className="tnum font-semibold text-gain">{fmtPct(t.roi)}</span>
+                </div>
+              </Link>
               <button className="mt-2 w-full rounded-lg bg-primary py-1.5 text-[11px] font-semibold text-primary-foreground hover:bg-primary/90">
                 Follow
               </button>
