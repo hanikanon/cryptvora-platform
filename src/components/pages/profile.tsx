@@ -4,6 +4,8 @@ import { useState } from "react"
 import { Send, Award, Users, Gift, GraduationCap, Check, Settings as SettingsIcon, Grid3x3, Clapperboard, UserSquare2, Camera } from "lucide-react"
 import { Panel, PanelHeader, Chip } from "@/components/ui/panel"
 import { ProgressRing } from "@/components/charts"
+import { PostTile } from "@/components/post-tile"
+import { USERS, CURRENT_USERNAME } from "@/lib/users"
 import { TELEGRAM_URL } from "@/lib/nav"
 import { cn } from "@/lib/utils"
 
@@ -25,14 +27,7 @@ const academy = [
   { title: "Advanced Order Flow", done: false },
 ]
 
-const POSTS = [
-  { id: 1, pnl: "+18.4%", pair: "BTC/USDT", tone: "gain" as const },
-  { id: 2, pnl: "+6.1%", pair: "ETH/USDT", tone: "gain" as const },
-  { id: 3, pnl: "-2.3%", pair: "SOL/USDT", tone: "loss" as const },
-  { id: 4, pnl: "+41.0%", pair: "AVAX/USDT", tone: "gain" as const },
-  { id: 5, pnl: "+3.8%", pair: "LINK/USDT", tone: "gain" as const },
-  { id: 6, pnl: "+12.6%", pair: "BNB/USDT", tone: "gain" as const },
-]
+const POSTS = USERS[CURRENT_USERNAME].posts
 
 export default function ProfilePage() {
   const [tab, setTab] = useState<"posts" | "reels" | "tagged">("posts")
@@ -113,7 +108,7 @@ export default function ProfilePage() {
 
       {/* Posts / Reels / Tagged tabs — Instagram grid */}
       <Panel className="overflow-hidden p-0">
-        <div className="flex items-center border-b border-border">
+        <div className="relative flex items-center border-b border-border">
           {(
             [
               { key: "posts", icon: Grid3x3 },
@@ -123,34 +118,27 @@ export default function ProfilePage() {
           ).map((t) => (
             <button
               key={t.key}
+              type="button"
               onClick={() => setTab(t.key)}
               className={cn(
-                "flex flex-1 items-center justify-center gap-1.5 border-t-2 py-3 text-[11px] font-semibold uppercase tracking-wide transition",
-                tab === t.key ? "border-foreground text-foreground" : "border-transparent text-muted-foreground",
+                "flex flex-1 items-center justify-center py-3 text-[11px] font-semibold uppercase tracking-wide transition-colors",
+                tab === t.key ? "text-foreground" : "text-muted-foreground hover:text-foreground",
               )}
             >
               <t.icon className="h-4 w-4" />
             </button>
           ))}
+          <span
+            aria-hidden
+            className="absolute bottom-0 h-[2px] w-1/3 bg-foreground transition-transform duration-200 ease-out"
+            style={{ transform: `translateX(${["posts", "reels", "tagged"].indexOf(tab) * 100}%)` }}
+          />
         </div>
 
         {tab === "posts" ? (
           <div className="grid grid-cols-3 gap-[2px] bg-border">
             {POSTS.map((p) => (
-              <div
-                key={p.id}
-                className={cn(
-                  "group relative flex aspect-square items-end justify-start overflow-hidden p-2",
-                  p.tone === "gain"
-                    ? "bg-gradient-to-br from-gain/25 via-card to-card"
-                    : "bg-gradient-to-br from-loss/25 via-card to-card",
-                )}
-              >
-                <div>
-                  <p className={cn("text-[13px] font-extrabold tnum", p.tone === "gain" ? "text-gain" : "text-loss")}>{p.pnl}</p>
-                  <p className="text-[9px] font-medium text-muted-foreground">{p.pair}</p>
-                </div>
-              </div>
+              <PostTile key={p.id} pnl={p.pnl} pair={p.pair} tone={p.tone} likes={p.likes} comments={p.comments} spark={p.spark} />
             ))}
             <button className="flex aspect-square flex-col items-center justify-center gap-1.5 bg-card text-muted-foreground transition hover:text-foreground">
               <Camera className="h-5 w-5" />
