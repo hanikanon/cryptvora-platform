@@ -1,20 +1,35 @@
+import {
+  Award,
+  Check,
+  GraduationCap,
+  Send,
+  Sparkles,
+  Users,
+  Gift,
+  TrendingUp,
+  Activity,
+} from "lucide-react";
+import { TELEGRAM_URL } from "@/lib/nav";
+import { Panel, PanelHeader, Chip } from "@/components/ui/panel";
+import { ProgressRing } from "@/components/charts";
+import { TierBadge } from "@/components/tier-badge";
+import { LevelProgress } from "@/components/level-progress";
+import {
+  CAPITAL_TIERS,
+  TRADER_TIERS,
+  getCapitalTier,
+  getTraderTier,
+  fmtCapital,
+  fmtXP,
+  type AnyTier,
+} from "@/lib/tiers";
+import { useLanguage } from "@/components/providers";
+import { useUnlockCelebration } from "@/components/unlock-celebration";
+import { cn } from "@/lib/utils";
 
-import { Link } from "@tanstack/react-router"
-import { Send, Award, Users, Gift, GraduationCap, Check, Settings as SettingsIcon } from "lucide-react"
-import { Panel, PanelHeader, Chip } from "@/components/ui/panel"
-import { ProgressRing } from "@/components/charts"
-import { TELEGRAM_URL } from "@/lib/nav"
-import { cn } from "@/lib/utils"
 
-const LEVELS = [
-  { name: "Bronze", color: "#b06a35" },
-  { name: "Silver", color: "#b8bcc4" },
-  { name: "Gold", color: "var(--gold)" },
-  { name: "Platinum", color: "#4fd1c5" },
-  { name: "Diamond", color: "var(--cyan)" },
-]
-const CURRENT_LEVEL = 2 // Gold
-const LEVEL_PROGRESS = 68
+const DEMO_CAPITAL = 68_000;
+const DEMO_XP = 6_800;
 
 const academy = [
   { title: "Crypto Fundamentals", done: true },
@@ -22,168 +37,275 @@ const academy = [
   { title: "Risk & Position Sizing", done: true },
   { title: "Futures & Leverage", done: false },
   { title: "Advanced Order Flow", done: false },
-]
+];
 
 export default function ProfilePage() {
+  const { lang } = useLanguage();
+  const { celebrate } = useUnlockCelebration();
+  const cap = getCapitalTier(DEMO_CAPITAL);
+  const trd = getTraderTier(DEMO_XP);
+
   return (
     <div className="flex flex-col gap-4 p-3 md:p-5">
-      {/* Profile header — trading-focused, Binance/Bybit style */}
-      <Panel className="flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between">
-        <div className="flex items-center gap-4">
-          <div className="relative shrink-0">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-gold/30 to-gold/5 text-2xl font-bold text-gold ring-1 ring-gold/40">
-              H
-            </div>
-            <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-gold text-[9px] font-bold text-[color:var(--background)] ring-2 ring-card">
-              GLD
-            </span>
-          </div>
-          <div className="min-w-0">
-            <div className="flex items-center gap-2">
-              <h1 className="truncate text-lg font-semibold text-foreground">hanibadji</h1>
-              <Chip tone="gain">Active</Chip>
-            </div>
-            <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
-              <Send className="h-3.5 w-3.5 text-cyan" />
-              @hanibadji · Telegram verified
-            </div>
-            <div className="mt-2 flex items-center gap-4 text-[11px]">
-              <span><span className="font-bold tnum text-foreground">62%</span> <span className="text-muted-foreground">win rate</span></span>
-              <span><span className="font-bold tnum text-foreground">148</span> <span className="text-muted-foreground">trades</span></span>
-              <span><span className="font-bold tnum text-gain">+$3,462</span> <span className="text-muted-foreground">30d PnL</span></span>
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <a
-            href={TELEGRAM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-cyan/30 bg-cyan/10 px-4 py-2.5 text-xs font-semibold text-cyan hover:bg-cyan/20"
-          >
-            <Send className="h-4 w-4" />
-            Manage via Crypto Bot
-          </a>
-          <Link
-            to="/settings"
-            aria-label="Settings"
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-border text-foreground transition hover:bg-accent"
-          >
-            <SettingsIcon className="h-4 w-4" />
-          </Link>
-        </div>
-      </Panel>
-
-      {/* Level progression */}
-      <Panel>
-        <PanelHeader
-          title="Level Progression"
-          subtitle="Trade volume unlocks higher tiers"
-          icon={<Award className="h-4 w-4 text-gold" />}
-          action={
-            <Link to="/levels" className="text-[11px] font-semibold text-primary hover:underline">
-              View all levels
-            </Link>
-          }
-        />
-        <div className="p-5">
-          <div className="relative flex items-center justify-between">
-            <div className="absolute left-0 right-0 top-4 h-0.5 bg-border" />
-            <div
-              className="absolute left-0 top-4 h-0.5 bg-gold transition-all"
-              style={{ width: `${(CURRENT_LEVEL / (LEVELS.length - 1)) * 100}%` }}
-            />
-            {LEVELS.map((l, i) => (
-              <div key={l.name} className="relative z-10 flex flex-col items-center gap-2">
-                <div
-                  className={cn(
-                    "flex h-8 w-8 items-center justify-center rounded-full border-2 text-[10px] font-bold transition-all",
-                    i <= CURRENT_LEVEL ? "text-[color:var(--background)]" : "bg-card text-muted-foreground",
-                  )}
-                  style={{
-                    background: i <= CURRENT_LEVEL ? l.color : undefined,
-                    borderColor: i <= CURRENT_LEVEL ? l.color : "var(--border)",
-                  }}
-                >
-                  {i < CURRENT_LEVEL ? <Check className="h-4 w-4" /> : i + 1}
+        {/* Hero */}
+        <Panel className="relative overflow-hidden">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-60"
+            style={{
+              background: `radial-gradient(620px 240px at 15% 15%, ${cap.current.color}33, transparent 60%), radial-gradient(520px 220px at 92% 85%, ${trd.current.color}44, transparent 60%)`,
+            }}
+          />
+          <div className="relative flex flex-col gap-6 p-6 md:flex-row md:items-center md:justify-between">
+            <div className="flex items-center gap-5">
+              <TierBadge tier={cap.current} size={96} float />
+              <div>
+                <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+                  <Sparkles className="h-3 w-3 text-gold" /> {"Trader Profile"}
                 </div>
-                <span className={cn("text-[10px] font-medium", i <= CURRENT_LEVEL ? "text-foreground" : "text-muted-foreground")}>
-                  {l.name}
-                </span>
+                <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+                  hanibadji
+                </h1>
+                <div className="mt-1.5 flex flex-wrap items-center gap-2 text-[12px] text-muted-foreground">
+                  <Send className="h-3.5 w-3.5 text-cyan" />
+                  @hanibadji · Telegram verified
+                  <Chip tone="gain">Active</Chip>
+                  <Chip tone="gold">
+                    {lang === "ar" ? cap.current.nameAr : cap.current.name}
+                  </Chip>
+                </div>
               </div>
-            ))}
-          </div>
-          <div className="mt-6">
-            <div className="flex items-center justify-between text-[11px]">
-              <span className="text-muted-foreground">Progress to Platinum</span>
-              <span className="tnum font-semibold text-gold">{LEVEL_PROGRESS}%</span>
             </div>
-            <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
-              <div className="h-full rounded-full bg-gradient-to-r from-gold to-cyan" style={{ width: `${LEVEL_PROGRESS}%` }} />
-            </div>
+
+            <a
+              href={TELEGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-cyan/30 bg-cyan/10 px-4 py-2.5 text-[12px] font-semibold text-cyan transition hover:bg-cyan/20"
+            >
+              <Send className="h-4 w-4" />
+              Manage via Crypto Bot
+            </a>
           </div>
+        </Panel>
+
+        {/* Dual-track progression */}
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <TrackPanel
+            icon={<TrendingUp className="h-4 w-4" style={{ color: cap.current.color }} />}
+            title={"Portfolio Track"}
+            subtitle={"Rises with your portfolio value."}
+            tiers={CAPITAL_TIERS as AnyTier[]}
+            state={cap}
+            value={DEMO_CAPITAL}
+            fmt={fmtCapital}
+            onCelebrate={celebrate}
+          />
+          <TrackPanel
+            icon={<Activity className="h-4 w-4" style={{ color: trd.current.color }} />}
+            title={"Trader Track"}
+            subtitle={"Earned through activity, trades, achievements and discipline."}
+            tiers={TRADER_TIERS as AnyTier[]}
+            state={trd}
+            value={DEMO_XP}
+            fmt={fmtXP}
+            onCelebrate={celebrate}
+          />
         </div>
-      </Panel>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        {/* Referral stats */}
-        <Panel className="lg:col-span-2">
-          <PanelHeader title="Referral Statistics" subtitle="Invite via your Telegram link" icon={<Users className="h-4 w-4 text-cyan" />} />
-          <div className="grid grid-cols-2 gap-3 p-4 md:grid-cols-4">
-            <MiniStat label="Total Referrals" value="248" tone="cyan" />
-            <MiniStat label="Active Traders" value="176" tone="gain" />
-            <MiniStat label="Commission" value="$12,480" tone="gold" />
-            <MiniStat label="This Month" value="$1,920" tone="gain" />
-          </div>
-          <div className="border-t border-border p-4">
-            <p className="mb-2 text-[11px] text-muted-foreground">Your referral link</p>
-            <div className="flex items-center gap-2 rounded-lg border border-border bg-input px-3 py-2">
-              <code className="flex-1 truncate text-xs text-foreground">https://t.me/CryptvoraBot?start=ref_hanibadji</code>
-              <button className="rounded-md bg-gold px-3 py-1 text-[11px] font-semibold text-[color:var(--background)]">Copy</button>
+        {/* Referral + rewards */}
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <Panel className="lg:col-span-2">
+            <PanelHeader
+              title="Referral Statistics"
+              subtitle="Invite via your Telegram link"
+              icon={<Users className="h-4 w-4 text-cyan" />}
+            />
+            <div className="grid grid-cols-2 gap-3 p-4 md:grid-cols-4">
+              <MiniStat label="Total Referrals" value="248" tone="cyan" />
+              <MiniStat label="Active Traders" value="176" tone="gain" />
+              <MiniStat label="Commission" value="$12,480" tone="gold" />
+              <MiniStat label="This Month" value="$1,920" tone="gain" />
             </div>
-          </div>
-        </Panel>
-
-        {/* Rewards ring */}
-        <Panel className="flex flex-col items-center justify-center gap-2 p-5">
-          <p className="text-[13px] font-semibold text-foreground">Rewards Earned</p>
-          <ProgressRing value={74} color="var(--gold)" label="Claimed" size={150} />
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Gift className="h-3.5 w-3.5 text-gold" />
-            3 rewards available
-          </div>
-        </Panel>
-      </div>
-
-      {/* Academy */}
-      <Panel>
-        <PanelHeader title="Completed Academy" subtitle="3 of 5 modules complete" icon={<GraduationCap className="h-4 w-4 text-gain" />} />
-        <ul className="divide-y divide-border/60">
-          {academy.map((m, i) => (
-            <li key={i} className="flex items-center justify-between px-4 py-3 text-xs">
-              <div className="flex items-center gap-3">
-                <span
-                  className={cn(
-                    "flex h-6 w-6 items-center justify-center rounded-full",
-                    m.done ? "bg-gain/15 text-gain" : "bg-muted text-muted-foreground",
-                  )}
-                >
-                  {m.done ? <Check className="h-3.5 w-3.5" /> : i + 1}
-                </span>
-                <span className={m.done ? "text-foreground" : "text-muted-foreground"}>{m.title}</span>
+            <div className="border-t border-border p-4">
+              <p className="mb-2 text-[11px] text-muted-foreground">Your referral link</p>
+              <div className="flex items-center gap-2 rounded-lg border border-border bg-input px-3 py-2">
+                <code className="flex-1 truncate text-[11px] text-foreground">
+                  https://t.me/CryptvoraBot?start=ref_hanibadji
+                </code>
+                <button className="rounded-md bg-gradient-to-r from-gold to-cyan px-3 py-1 text-[11px] font-semibold text-[color:var(--background)]">
+                  Copy
+                </button>
               </div>
-              <Chip tone={m.done ? "gain" : "muted"}>{m.done ? "Completed" : "Locked"}</Chip>
-            </li>
-          ))}
-        </ul>
-      </Panel>
+            </div>
+          </Panel>
+
+          <Panel className="flex flex-col items-center justify-center gap-2 p-5">
+            <p className="text-[13px] font-semibold text-foreground">Rewards Earned</p>
+            <ProgressRing value={74} color="var(--gold)" label="Claimed" size={160} />
+            <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+              <Gift className="h-3.5 w-3.5 text-gold" />
+              3 rewards available
+            </div>
+          </Panel>
+        </div>
+
+        {/* Academy */}
+        <Panel>
+          <PanelHeader
+            title="Completed Academy"
+            subtitle="3 of 5 modules complete"
+            icon={<GraduationCap className="h-4 w-4 text-gain" />}
+          />
+          <ul className="divide-y divide-border/60">
+            {academy.map((m, i) => (
+              <li key={i} className="flex items-center justify-between px-4 py-3 text-[12px]">
+                <div className="flex items-center gap-3">
+                  <span
+                    className={cn(
+                      "flex h-6 w-6 items-center justify-center rounded-full",
+                      m.done ? "bg-gain/15 text-gain" : "bg-muted text-muted-foreground",
+                    )}
+                  >
+                    {m.done ? <Check className="h-3.5 w-3.5" /> : i + 1}
+                  </span>
+                  <span className={m.done ? "text-foreground" : "text-muted-foreground"}>{m.title}</span>
+                </div>
+                <Chip tone={m.done ? "gain" : "muted"}>{m.done ? "Completed" : "Locked"}</Chip>
+              </li>
+            ))}
+          </ul>
+        </Panel>
     </div>
-  )
+  );
 }
 
-function MiniStat({ label, value, tone }: { label: string; value: string; tone?: "gain" | "cyan" | "gold" }) {
+/* ------------------------------------------------------------------ */
+
+function TrackPanel({
+  icon, title, subtitle, tiers, state, value, fmt, onCelebrate,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  subtitle: string;
+  tiers: AnyTier[];
+  state: { current: AnyTier; next?: AnyTier; index: number; progress: number; remaining: number };
+  value: number;
+  fmt: (n: number) => string;
+  onCelebrate: (t: AnyTier) => void;
+}) {
+  const { lang } = useLanguage();
+  const { current, next, index, progress, remaining } = state;
+  const name = lang === "ar" ? current.nameAr : current.name;
+
   return (
-    <div className="rounded-lg border border-border bg-card/50 p-3">
+    <Panel className="relative overflow-hidden">
+      <PanelHeader
+        title={title}
+        subtitle={subtitle}
+        icon={icon}
+        action={<Chip tone="gold">{fmt(value)} · {name}</Chip>}
+      />
+
+      <div className="relative flex flex-col items-center gap-4 border-b border-border/60 px-5 pb-6 pt-4 md:flex-row md:gap-6">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-32 opacity-70"
+          style={{ background: `radial-gradient(500px 160px at 50% 0%, ${current.color}22, transparent 70%)` }}
+        />
+        <TierBadge tier={current} size={112} float />
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <div>
+              <p className="text-xl font-semibold tracking-tight md:text-2xl" style={{ color: current.color }}>
+                {name}
+              </p>
+              <p className="text-[11px] text-muted-foreground">
+                {lang === "ar" ? current.taglineAr : current.tagline}
+              </p>
+            </div>
+          </div>
+          <div className="mt-3">
+            <LevelProgress
+              tier={current}
+              next={next}
+              value={value}
+              progress={progress}
+              remaining={remaining}
+              format={fmt}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Horizontal 20-tier rail */}
+      <div className="relative overflow-x-auto px-5 pb-6 pt-6 [scrollbar-width:thin]">
+        <div className="relative min-w-max">
+          <div className="absolute left-8 right-8 top-[46px] h-[2px] rounded bg-border" />
+          <div
+            className="absolute left-8 top-[46px] h-[2px] rounded transition-all"
+            style={{
+              width: `calc((100% - 64px) * ${(index + progress) / (tiers.length - 1)})`,
+              background: `linear-gradient(90deg, ${tiers[0].color}, ${current.color}, ${tiers[tiers.length - 1].color})`,
+              boxShadow: `0 0 12px ${current.color}88`,
+            }}
+          />
+          <ol className="relative z-10 flex items-start gap-4 md:gap-6">
+            {tiers.map((tier, i) => {
+              const active = i <= index;
+              const isCurrent = i === index;
+              return (
+                <li key={tier.key} className="flex w-[72px] shrink-0 flex-col items-center gap-1.5 text-center">
+                  <button
+                    type="button"
+                    onClick={() => onCelebrate(tier)}
+                    className={cn(
+                      "rounded-full p-1 transition focus:outline-none",
+                      isCurrent && "ring-2 ring-offset-2 ring-offset-background",
+                    )}
+                    style={isCurrent ? { boxShadow: tier.glow, ["--tw-ring-color" as never]: tier.color } : undefined}
+                  >
+                    <TierBadge tier={tier} size={isCurrent ? 68 : 48} dim={!active} float={isCurrent} />
+                  </button>
+                  <span
+                    className={cn("text-[10px] font-semibold leading-tight", active ? "text-foreground" : "text-muted-foreground")}
+                    style={isCurrent ? { color: tier.color } : undefined}
+                  >
+                    {lang === "ar" ? tier.nameAr : tier.name}
+                  </span>
+                  <span className="text-[9px] text-muted-foreground tnum">{fmt(tier.min)}+</span>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      </div>
+
+      {next && (
+        <div className="border-t border-border/60 p-4">
+          <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+            <Gift className="h-3 w-3" style={{ color: next.color }} />
+            {"Next rewards"}
+          </div>
+          <ul className="mt-2 grid grid-cols-1 gap-1 sm:grid-cols-2">
+            {(lang === "ar" ? next.rewardsAr : next.rewards).map((r) => (
+              <li key={r} className="flex items-center gap-1.5 text-[11px] text-foreground/90">
+                <span className="h-1 w-1 rounded-full" style={{ background: next.color }} />
+                {r}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </Panel>
+  );
+}
+
+function MiniStat({
+  label, value, tone,
+}: { label: string; value: string; tone?: "gain" | "cyan" | "gold" }) {
+  return (
+    <div className="rounded-lg border border-border bg-elevated/40 p-3">
       <p className="text-[10px] text-muted-foreground">{label}</p>
       <p
         className={cn(
@@ -196,5 +318,5 @@ function MiniStat({ label, value, tone }: { label: string; value: string; tone?:
         {value}
       </p>
     </div>
-  )
+  );
 }

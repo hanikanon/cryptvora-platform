@@ -1,11 +1,10 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { LayoutDashboard, LineChart, MessagesSquare, Wallet, User } from "lucide-react";
+import { LayoutDashboard, LineChart, Wallet, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const TABS = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
   { label: "Markets", href: "/markets", icon: LineChart },
-  { label: "Community", href: "/community", icon: MessagesSquare },
   { label: "Portfolio", href: "/portfolio", icon: Wallet },
   { label: "Profile", href: "/profile", icon: User },
 ] as const;
