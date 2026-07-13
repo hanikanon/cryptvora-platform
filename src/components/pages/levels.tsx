@@ -125,7 +125,6 @@ export default function LevelsPage() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
 
