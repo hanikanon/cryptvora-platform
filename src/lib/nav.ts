@@ -8,6 +8,7 @@ import {
   CalendarDays,
   Newspaper,
   GraduationCap,
+  MessagesSquare,
   User,
   Gift,
   Settings,
@@ -18,8 +19,8 @@ import {
 export type NavItem = { label: string; href: string; icon: LucideIcon };
 
 export const NAV_MAIN: NavItem[] = [
-  { label: "Home", href: "/", icon: LayoutDashboard },
-  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Dashboard", href: "/", icon: LayoutDashboard },
+  { label: "Community", href: "/community", icon: MessagesSquare },
   { label: "Portfolio", href: "/portfolio", icon: Wallet },
   { label: "Markets", href: "/markets", icon: LineChart },
   { label: "Trading Terminal", href: "/trading", icon: CandlestickChart },

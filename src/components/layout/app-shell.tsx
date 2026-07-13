@@ -13,7 +13,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const pathname = useLocation({ select: (l) => l.pathname });
   const isChat = pathname.startsWith("/community");
-  const isFeed = pathname === "/" || pathname.startsWith("/explore") || pathname.startsWith("/create");
 
   useEffect(() => {
     if (ready && !user) navigate({ to: "/login", replace: true });
@@ -37,7 +36,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <Header />
-        {!isChat && !isFeed && <MarketTicker />}
+        {!isChat && <MarketTicker />}
         <main className={cn("flex-1", isChat ? "min-h-0 overflow-hidden" : "pb-24 lg:pb-6")}>
           {children}
         </main>

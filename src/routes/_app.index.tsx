@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import FeedPage from "@/components/pages/feed";
+import DashboardPage from "@/components/pages/dashboard";
 
 export const Route = createFileRoute("/_app/")({
   head: () => ({
     meta: [
-      { title: "Cryptvora — Home" },
-      { name: "description", content: "The crypto trading social feed: charts, PnL, live signals from top traders." },
+      { title: "Cryptvora — Dashboard" },
+      { name: "description", content: "Your trading cockpit — performance, tiers and risk at a glance." },
     ],
   }),
-  component: FeedPage,
+  component: DashboardPage,
 });
