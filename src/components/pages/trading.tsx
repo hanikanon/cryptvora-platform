@@ -2,6 +2,7 @@
 import { useState } from "react"
 import { Panel, PanelHeader, Chip } from "@/components/ui/panel"
 import { CandlestickChart, DepthChart } from "@/components/charts"
+import { TradingViewWidget } from "@/components/tradingview-widget"
 import { generateCandles, buildOrderBook, recentTrades, openPositions, orderHistory, depthData } from "@/lib/market-data"
 import { fmtUsd, fmtNum, fmtPct } from "@/lib/format"
 import { cn } from "@/lib/utils"
@@ -18,6 +19,7 @@ export default function TradingPage() {
   const [orderType, setOrderType] = useState<(typeof ORDER_TYPES)[number]>("Limit")
   const [leverage, setLeverage] = useState(10)
   const [tab, setTab] = useState<"positions" | "orders" | "history">("positions")
+  const [chartSource, setChartSource] = useState<"tradingview" | "terminal">("tradingview")
 
   return (
     <div className="flex flex-col gap-3 p-3 md:p-4">
@@ -45,28 +47,50 @@ export default function TradingPage() {
         <div className="flex flex-col gap-3">
           <Panel>
             <div className="flex items-center justify-between border-b border-border px-3 py-2">
-              <div className="flex items-center gap-1">
-                {["1m", "5m", "15m", "1H", "4H", "1D", "1W"].map((tf, i) => (
+              <div className="flex items-center gap-1 rounded-lg bg-muted p-0.5">
+                {(["tradingview", "terminal"] as const).map((s) => (
                   <button
-                    key={tf}
+                    key={s}
+                    onClick={() => setChartSource(s)}
                     className={cn(
-                      "rounded px-2 py-1 text-[11px] font-medium",
-                      i === 3 ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground",
+                      "rounded-md px-2.5 py-1 text-[11px] font-semibold transition",
+                      chartSource === s ? "bg-card text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground",
                     )}
                   >
-                    {tf}
+                    {s === "tradingview" ? "TradingView" : "Terminal"}
                   </button>
                 ))}
               </div>
-              <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
-                <span className="text-gain">O 94,210</span>
-                <span className="text-gain">H 98,120</span>
-                <span className="text-loss">L 94,880</span>
-                <span className="text-gain">C 97,432</span>
-              </div>
+              {chartSource === "terminal" && (
+                <div className="flex items-center gap-1">
+                  {["1m", "5m", "15m", "1H", "4H", "1D", "1W"].map((tf, i) => (
+                    <button
+                      key={tf}
+                      className={cn(
+                        "rounded px-2 py-1 text-[11px] font-medium",
+                        i === 3 ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground",
+                      )}
+                    >
+                      {tf}
+                    </button>
+                  ))}
+                </div>
+              )}
+              {chartSource === "terminal" && (
+                <div className="hidden items-center gap-2 text-[11px] text-muted-foreground sm:flex">
+                  <span className="text-gain">O 94,210</span>
+                  <span className="text-gain">H 98,120</span>
+                  <span className="text-loss">L 94,880</span>
+                  <span className="text-gain">C 97,432</span>
+                </div>
+              )}
             </div>
-            <div className="p-2">
-              <CandlestickChart data={candles} height={380} />
+            <div className={chartSource === "terminal" ? "p-2" : ""}>
+              {chartSource === "tradingview" ? (
+                <TradingViewWidget symbol="BINANCE:BTCUSDT" height={420} interval="60" />
+              ) : (
+                <CandlestickChart data={candles} height={380} />
+              )}
             </div>
           </Panel>
 

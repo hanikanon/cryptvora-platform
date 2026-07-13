@@ -2,18 +2,28 @@
 import { Panel, PanelHeader, Chip } from "@/components/ui/panel"
 import { Sparkline } from "@/components/charts"
 import { COINS } from "@/lib/market-data"
+import { useLivePrices } from "@/hooks/use-live-prices"
 import { fmtUsd, fmtPct, fmtCompact } from "@/lib/format"
 import { cn } from "@/lib/utils"
 
 export default function MarketsPage() {
-  const gainers = [...COINS].sort((a, b) => b.change24h - a.change24h).slice(0, 5)
-  const losers = [...COINS].sort((a, b) => a.change24h - b.change24h).slice(0, 5)
+  const { coins, isLive } = useLivePrices()
+  const gainers = [...coins].sort((a, b) => b.change24h - a.change24h).slice(0, 5)
+  const losers = [...coins].sort((a, b) => a.change24h - b.change24h).slice(0, 5)
 
   return (
     <div className="flex flex-col gap-4 p-3 md:p-5">
-      <div>
-        <h1 className="text-lg font-semibold text-foreground">Markets</h1>
-        <p className="text-xs text-muted-foreground">Live spot & perpetual markets</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-lg font-semibold text-foreground">Markets</h1>
+          <p className="text-xs text-muted-foreground">Live spot & perpetual markets</p>
+        </div>
+        {isLive && (
+          <span className="flex items-center gap-1.5 rounded-full bg-gain/12 px-2.5 py-1 text-[10px] font-bold text-gain">
+            <span className="h-1.5 w-1.5 rounded-full bg-gain animate-pulse" />
+            LIVE
+          </span>
+        )}
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -22,7 +32,7 @@ export default function MarketsPage() {
       </div>
 
       <Panel>
-        <PanelHeader title="All Markets" subtitle={`${COINS.length} pairs`} />
+        <PanelHeader title="All Markets" subtitle={`${coins.length} pairs`} />
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
@@ -36,7 +46,7 @@ export default function MarketsPage() {
               </tr>
             </thead>
             <tbody>
-              {COINS.map((c) => (
+              {coins.map((c) => (
                 <tr key={c.symbol} className="border-b border-border/50 last:border-0 hover:bg-muted/40">
                   <td className="px-4 py-2.5">
                     <div className="flex items-center gap-2">

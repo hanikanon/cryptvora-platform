@@ -10,6 +10,7 @@ import {
   transactions,
 } from "@/lib/market-data"
 import { fmtUsd, fmtNum, fmtPct } from "@/lib/format"
+import { useLivePrices } from "@/hooks/use-live-prices"
 import { TELEGRAM_URL } from "@/lib/nav"
 import { cn } from "@/lib/utils"
 import {
@@ -181,11 +182,12 @@ export function OrderHistory() {
 
 /* ---------- Watchlist ---------- */
 export function Watchlist() {
+  const { coins } = useLivePrices()
   return (
     <Panel>
       <PanelHeader title="Watchlist" subtitle="Tracked assets" action={<Chip tone="cyan">8 pairs</Chip>} />
       <div className="divide-y divide-border/60">
-        {COINS.slice(0, 8).map((c) => {
+        {coins.slice(0, 8).map((c) => {
           const up = c.change24h >= 0
           return (
             <div key={c.symbol} className="flex items-center gap-3 px-4 py-2 hover:bg-secondary/40">
@@ -211,7 +213,8 @@ export function Watchlist() {
 
 /* ---------- Top Gainers / Losers ---------- */
 export function MoversList({ mode }: { mode: "gainers" | "losers" }) {
-  const sorted = [...COINS].sort((a, b) => (mode === "gainers" ? b.change24h - a.change24h : a.change24h - b.change24h)).slice(0, 5)
+  const { coins } = useLivePrices()
+  const sorted = [...coins].sort((a, b) => (mode === "gainers" ? b.change24h - a.change24h : a.change24h - b.change24h)).slice(0, 5)
   const up = mode === "gainers"
   return (
     <Panel>

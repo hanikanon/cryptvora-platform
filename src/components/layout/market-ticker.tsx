@@ -1,10 +1,11 @@
 
-import { COINS } from "@/lib/market-data"
+import { useLivePrices } from "@/hooks/use-live-prices"
 import { fmtNum, fmtPct } from "@/lib/format"
 import { cn } from "@/lib/utils"
 
 export function MarketTicker() {
-  const items = [...COINS, ...COINS]
+  const { coins, isLive } = useLivePrices()
+  const items = [...coins, ...coins]
   return (
     <div className="relative overflow-hidden border-b border-border bg-panel/60">
       <div className="flex w-max animate-ticker gap-6 py-1.5 px-4">
@@ -21,6 +22,12 @@ export function MarketTicker() {
           )
         })}
       </div>
+      {isLive && (
+        <span className="absolute right-2 top-1/2 hidden -translate-y-1/2 items-center gap-1 rounded-full bg-gain/12 px-2 py-0.5 text-[9px] font-bold text-gain sm:flex">
+          <span className="h-1.5 w-1.5 rounded-full bg-gain animate-pulse" />
+          LIVE
+        </span>
+      )}
     </div>
   )
 }
